@@ -1,4 +1,4 @@
-import { TNullableBoolean, TNullableString, TNullableNumber, TNullableDate } from "@app/utils/shared/types";
+import { TNullableString, TNullableNumber, TNullableDate } from "@app/utils/shared/types";
 
 export class Users {
   constructor(
@@ -22,6 +22,7 @@ export interface IUsersRepository {
   create(usersData: Partial<Users>): Promise<Users>;
   findAll(): Promise<Users[]>;
   findById(id: number): Promise<Users | null>;
+  findByEmail(email: string): Promise<Users | null>;
   update(id: number, usersData: Partial<Users>): Promise<Users | null>;
   delete(id: number, idUserLogged: number): Promise<void>;
   restore(id: number, idUserLogged: number): Promise<void>;
