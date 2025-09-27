@@ -19,6 +19,13 @@ export default {
       },
     },
   },
+  jwt: {
+    expirationInterval: process.env.JWT_ACCESS_EXPIRES,
+    expirationIntervalRefresh: process.env.JWT_REFRESH_EXPIRES,
+    access_secret: process.env.JWT_ACCESS_SECRET,
+    refresh_secret: process.env.JWT_REFRESH_SECRET,
+    issuer: process.env.JWT_ISSUER,
+  },
   smtp: {
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT_02),
