@@ -53,6 +53,12 @@ const init = async () => {
     app.listen(app.get("port"), () => {
       console.log(`Server in ${config.node} mode on port ${app.get("port")}`);
       const baseUrl = `${config.baseUrl}:${app.get("port")}`;
+
+      if (config.node === "local") {
+        console.log(`API is available at ${baseUrl}/api/v1`);
+        console.log(`Swagger is available at ${baseUrl}/docs`);
+      }
+
       if (config.node === "development") {
         console.log(`API is available at ${baseUrl}/api/v1`);
         console.log(`Swagger is available at ${baseUrl}/docs`);

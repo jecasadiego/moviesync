@@ -31,7 +31,7 @@ const createInstanceDb = () => {
     .authenticate()
     .then(() => {
       if (isMainThread) {
-        console.info("✅ Connected to MySQL successfully");
+        console.info("✅ Connected to MySQL successfully in port", cn.port);
         console.log("--------------------------");
       }
     })
