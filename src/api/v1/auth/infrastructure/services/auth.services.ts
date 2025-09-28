@@ -9,8 +9,8 @@ export type AppJwtPayload = { sub: number; email: string; roleId?: number | null
 const ACCESS_SECRET: Secret = process.env.JWT_ACCESS_SECRET as string;
 const REFRESH_SECRET: Secret = process.env.JWT_REFRESH_SECRET as string;
 
-const ACCESS_EXP: SignOptions['expiresIn'] = 15 * 60;              // 15m
-const REFRESH_EXP: SignOptions['expiresIn'] = 7 * 24 * 60 * 60;     // 7d
+const ACCESS_EXP = (process.env.JWT_ACCESS_EXPIRES ?? '15m') as SignOptions['expiresIn'];
+const REFRESH_EXP = (process.env.JWT_REFRESH_EXPIRES ?? '7d') as SignOptions['expiresIn'];
 
 export const AuthCrypto = {
     hash: (plain: string) => bcrypt.hash(plain, 10),

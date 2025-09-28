@@ -1,6 +1,7 @@
 import { AuthRepository } from '@api/auth/infrastructure/repository/auth.repository';
 import { AuthCrypto, AuthTokens } from '@api/auth/infrastructure/services/auth.services';
 import { LoginDTO, RegisterDTO, PublicUser } from '@api/auth/domain/auth.entity';
+import { rolesUseCase } from '@api/roles/infrastructure/services/roles.services';
 
 const mapPublic = (r: any): PublicUser => ({
     id: r.sys_user_id,
@@ -15,6 +16,7 @@ export class AuthUseCase {
 
     async register(input: RegisterDTO): Promise<PublicUser> {
         const exists = await this.repo.findActiveUserByEmail(input.email);
+        const role = await rolesUseCase.getRoleBySlug('user');
         if (exists) throw new Error('Email ya está registrado');
         const hash = await AuthCrypto.hash(input.password);
         const u = await this.repo.createUser({
@@ -22,7 +24,7 @@ export class AuthUseCase {
             lastname: input.lastname,
             email: input.email,
             passwordHash: hash,
-            roleId: input.roleId ?? null,
+            roleId: role?.sys_role_id,
             createdBy: input.createdBy ?? null,
         });
         return mapPublic(u);

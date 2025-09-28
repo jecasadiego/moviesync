@@ -1,5 +1,5 @@
 import { EErrorMessage } from "@app/utils/shared/enums";
-import { verifyToken } from "@app/utils/token";
+import { verifyTokenRoute } from "@app/utils/token";
 // Valida si un correo electrónico es válido
 export const isValidEmail = (email: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -74,12 +74,12 @@ export function getIdUserLogged(header: string | undefined): number {
     throw new Error(EErrorMessage.NOT_FOUND_TOKEN);
   }
 
-  const tokenVerificationResult = verifyToken(token);
+  const tokenVerificationResult = verifyTokenRoute(token);
 
   if (!tokenVerificationResult) {
     throw new Error(EErrorMessage.NOT_FOUND_TOKEN);
   }
 
-  const userId = tokenVerificationResult.payload?.id as number;
+  const userId = tokenVerificationResult.decoded?.sub as number;
   return userId;
 }

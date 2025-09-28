@@ -1,6 +1,7 @@
 
 import jwt, { Secret } from "jsonwebtoken";
 import config from "@app/config";
+import { AuthTokens } from "@api/auth/infrastructure/services/auth.services";
 
 
 const encoder = new TextEncoder();
@@ -17,13 +18,8 @@ export const SecretKey: Secret | Uint8Array = encoder
 
 export const verifyTokenRoute = (token: string): any => {
     try {
-        const decoded = jwt.verify(token, SecretKey);
-
-        if (decoded.sub === "token_authenticate") {
-            return { valid: true, decoded };
-        } else {
-            return { valid: false, decoded: null };
-        }
+        const decoded = AuthTokens.verifyAccess(token);
+        return { valid: true, decoded };
     } catch (err: any) {
         if (err.name === "TokenExpiredError") {
             console.error("El token ha expirado");
