@@ -4,7 +4,7 @@
   "main": "./src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "cross-env PORT=3000 NODE_ENV=development nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.development",
+    "dev": "cross-env NODE_ENV=development nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.development",
     "build": "rimraf dist && tsc -p tsconfig.json && tsc-alias -p tsconfig.json",
     "start": "cross-env DOTENV_CONFIG_PATH=.env.development node -r dotenv/config dist/index.js",
     "start2": "cross-env NODE_ENV=production ts-node -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.development",
