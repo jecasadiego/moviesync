@@ -5,7 +5,8 @@ import {
   users,
   roles,
   fileTypes,
-  movies
+  movies,
+  theaters
 } from "@api/v1.routes";
 import { validateTokenMiddleware } from "@app/utils/middlewares";
 
@@ -21,6 +22,7 @@ routes.use(validateTokenMiddleware);
 routes.use("/users", users);
 routes.use("/file-types", fileTypes);
 routes.use("/movies", movies);
+routes.use("/theaters", theaters);
 
 
 
