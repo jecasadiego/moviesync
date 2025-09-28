@@ -3,7 +3,9 @@ import config from "@app/config";
 import {
   auth,
   users,
-  roles
+  roles,
+  fileTypes,
+  movies
 } from "@api/v1.routes";
 import { validateTokenMiddleware } from "@app/utils/middlewares";
 
@@ -17,6 +19,8 @@ routes.use("/auth", auth);
 routes.use("/roles", roles);
 routes.use(validateTokenMiddleware);
 routes.use("/users", users);
+routes.use("/file-types", fileTypes);
+routes.use("/movies", movies);
 
 
 
