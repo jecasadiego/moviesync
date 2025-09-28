@@ -10,11 +10,10 @@ export function authGuard(req: Request, res: Response, next: NextFunction): void
   }
 
   try {
-    // "Bearer <token>"
     const token = header.slice(7).trim();
     const payload = AuthTokens.verifyAccess(token);
     (req as any).user = payload;
-    return next(); // ← return también aquí
+    return next();
   } catch {
     res.status(401).json({ message: 'Invalid/expired token' });
     return;
