@@ -5,7 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.development",
-    "start": "node -r dotenv/config -r tsconfig-paths/register dist/index.js",
+    "start": "node -r dotenv/config -r tsconfig-paths/register ./src/index.js",
     "local": "cross-env NODE_ENV=local nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.local",
     "production": "cross-env NODE_ENV=production nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.production"
   },
@@ -34,6 +34,7 @@
     "sequelize": "^6.37.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
+    "tsconfig-paths": "^4.2.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
