@@ -5,8 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "cross-env NODE_ENV=development nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.development",
-    "build": "tsc -p .",
-    "start": "node dist/index.js",
+    "start": "cross-env NODE_ENV=production ts-node -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.development",
     "local": "cross-env NODE_ENV=local nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.local",
     "production": "cross-env NODE_ENV=production nodemon -r dotenv/config -r tsconfig-paths/register ./src/index.ts dotenv_config_path=.env.production"
   },
