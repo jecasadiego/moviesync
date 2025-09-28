@@ -29,7 +29,7 @@ console.log("--------------------------");
 
 // Home
 app.get("/", (_req, res) => {
-  res.send("Bienvenido este es el backend de la aplicación de IDBFORM EDUTECT v.0.1.0");
+  res.send("Bienvenido este es el backend de la aplicación de MovieSync");
 });
 
 // API
