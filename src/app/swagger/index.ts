@@ -5,7 +5,7 @@ import swaggerUi from "swagger-ui-express";
 const swaggerDefinition: any = {
     openapi: "3.0.0",
     info: {
-        title: "API Rest IdbForm EDUTECT",
+        title: "API Rest MovieSync",
         description:
             "Esta API es documentada con Swagger, así se puede lograr un correcto y adecuado manejo a la misma.",
         contact: {
@@ -19,6 +19,10 @@ const swaggerDefinition: any = {
             url: `http://localhost:5000/api/v1`,
             description: "Local serve",
         },
+        {
+            url: `${process.env.SWAGGER_SERVER_CLOUD}/api/v1`,
+            description: "Cloud server",
+        }
     ],
     components: {
         securitySchemes: {
