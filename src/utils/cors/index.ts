@@ -11,7 +11,8 @@ const corsOptions = {
     "https://idbforms-test.sinapsisdev.com",
     "https://idbforms-edu-dev.sinapsisdev.com",
     "https://zealous-hill-0f3dfcc0f.6.azurestaticapps.net",
-    "https://idbforms-edutec-dev.sinapsisdev.com"
+    "https://idbforms-edutec-dev.sinapsisdev.com",
+    "https://moviesync-je.netlify.app"
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],

@@ -6,7 +6,8 @@ import {
   roles,
   fileTypes,
   movies,
-  theaters
+  theaters,
+  backblaze
 } from "@api/v1.routes";
 import { validateTokenMiddleware } from "@app/utils/middlewares";
 
@@ -23,6 +24,7 @@ routes.use("/users", users);
 routes.use("/file-types", fileTypes);
 routes.use("/movies", movies);
 routes.use("/theaters", theaters);
+routes.use("/backblaze", backblaze);
 
 
 
