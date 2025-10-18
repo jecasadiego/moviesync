@@ -1,4 +1,5 @@
 import { TNullableString, TNullableNumber, TNullableDate } from "@app/utils/shared/types";
+import { Movies } from "@api/movies/domain/movies.entity";
 
 export class Theaters {
   constructor(
@@ -12,6 +13,7 @@ export class Theaters {
     public theater_update_date: TNullableDate,
     public theater_create_id_user: TNullableNumber,
     public theater_update_id_user: TNullableNumber,
+    public movies_by_theater?: Movies[]
   ) { }
 }
 

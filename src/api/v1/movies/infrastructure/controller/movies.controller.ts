@@ -55,6 +55,19 @@ export class MoviesController {
         }
     };
 
+     public uploadSoundForMovie = async ({ params: { id, idLanguage }, method, file, headers }: Request, res: Response) => {
+        try {
+            const idUserLogged = getIdUserLogged(headers.authorization);
+            const fileConvert = file as Express.Multer.File;
+            if(!fileConvert) return warning(res, EErrorMessage.NOT_FOUND_ERROR, ECodeHTTPStatus.NOT_FOUND, "Files not found");
+            const movies = await this.moviesUseCase.uploadSoundForMovie(+id, fileConvert, idUserLogged, +idLanguage);
+            fromStatusAndCode(res, movies, method);
+        } catch (error: unknown) {
+            const errorAsError = error as Error;
+            return warning(res, EErrorMessage.CREATE_DATA_ERROR, ECodeHTTPStatus.INTERNAL_SERVER_ERROR, errorAsError.message);
+        }
+    };
+
     public updateMovies = async ({ params: { id }, body, method, headers }: Request, res: Response) => {
         try {
             const idUserLogged = getIdUserLogged(headers.authorization);

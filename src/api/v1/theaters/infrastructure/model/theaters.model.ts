@@ -2,6 +2,8 @@
 import { Model, DataTypes } from 'sequelize';
 import { getDbInstance } from '@app/app/database';
 import { TNullableString, TNullableNumber, TNullableDate } from "@app/utils/shared/types";
+import { MovieByTheatersModel } from '@app/api/v1/movieByTheaters/infrastructure/model/movieByTheaters.model';
+import { MoviesModel } from '@app/api/v1/movies/infrastructure/model/movies.model';
 
 
 const sequelizeInstance = getDbInstance();
@@ -17,6 +19,11 @@ export class TheatersModel extends Model {
   declare theater_update_date: TNullableDate;
   declare theater_create_id_user: TNullableNumber;
   declare theater_update_id_user: TNullableNumber;
+  static associate() {
+    this.belongsToMany(MoviesModel,
+      { through: MovieByTheatersModel, foreignKey: 'movies_by_theater_id_theater', otherKey: 'movies_by_theater_id_movie', as: 'movies_by_theater' }
+    )
+  }
 }
 
 TheatersModel.init(
@@ -94,3 +101,5 @@ TheatersModel.init(
     }
   }
 );
+
+TheatersModel.associate();

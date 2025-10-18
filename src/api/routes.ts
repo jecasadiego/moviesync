@@ -20,7 +20,7 @@ routes.get("/", (_, res) => {
 
 routes.use("/auth", auth);
 routes.use("/roles", roles);
-// routes.use(validateTokenMiddleware);
+routes.use(validateTokenMiddleware);
 routes.use("/users", users);
 routes.use("/file-types", fileTypes);
 routes.use("/movies", movies);

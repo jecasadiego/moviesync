@@ -1,6 +1,8 @@
 
 import { ITheatersRepository } from '@api/theaters/domain/theaters.entity';
 import { TheatersModel } from '@api/theaters/infrastructure/model/theaters.model';
+import { GenericUrlsModel } from '@app/api/v1/genericUrls/infrastructure/model/genericUrls.model';
+import { MoviesModel } from '@app/api/v1/movies/infrastructure/model/movies.model';
 
 export class TheatersRepository implements ITheatersRepository {
   async findAll(): Promise<TheatersModel[]> {
@@ -8,7 +10,21 @@ export class TheatersRepository implements ITheatersRepository {
   }
 
   async findById(id: number): Promise<TheatersModel | null> {
-    return await TheatersModel.findByPk(id);
+    return await TheatersModel.findByPk(id, {
+      include: [
+        {
+          model: MoviesModel, 
+          as: 'movies_by_theater', 
+          through: { attributes: [] },
+          include: [{
+            model: GenericUrlsModel,
+            as: 'image_default',
+            attributes: ['gene_url_id', 'gene_url_value'],
+            required: false
+          }]
+        }
+      ]
+    });
   }
 
   async create(theatersData: Partial<TheatersModel>): Promise<TheatersModel> {

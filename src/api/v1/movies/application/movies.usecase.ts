@@ -9,6 +9,8 @@ import { urlsMoviesImagesUseCase } from '@api/urlsMoviesImages/infrastructure/se
 import { GenericUrls } from '@api/genericUrls/domain/genericUrls.entity';
 import { ulid } from "ulid";
 import { getDbInstance } from '@app/app/database';
+import { languagesUseCase } from '@api/languages/infrastructure/services/languages.services';
+import { languagesByMoviesUseCase } from '@api/languagesByMovies/infrastructure/services/languagesByMovies.services';
 
 
 
@@ -20,7 +22,7 @@ export class MoviesUseCase {
         return await this.moviesRepository.findAll();
     }
 
-    async getMoviesById(id: number): Promise<{ movie: Movies, images: {default: string | null, images: string[]} } | null> {
+    async getMoviesById(id: number): Promise<{ movie: Movies, images: { default: string | null, images: string[] } } | null> {
         const movie = await this.moviesRepository.findById(id);
         const imageMovies = movie?.images_movies || [];
         if (!movie) throw new Error('Movies not found');
@@ -37,7 +39,7 @@ export class MoviesUseCase {
             imageDefault = backBlazeUrl;
         }
 
-        return { movie, images: { default: imageDefault, images} };
+        return { movie, images: { default: imageDefault, images } };
     }
 
     async createMovies(moviesData: Partial<Movies>, idUserLogged: number): Promise<Movies> {
@@ -92,9 +94,61 @@ export class MoviesUseCase {
 
             return generalImages;
         } catch (e) {
-            console.error(e);
             await transaction.rollback();
-            throw new Error('Error in upload image for movie');
+            throw new Error('Error in upload image for movie' + e);
+        }
+    }
+
+    async uploadSoundForMovie(movieId: number, file: Express.Multer.File, idUserLogged: number, idLanguage: number): Promise<GenericUrls> {
+
+        const fileName = ulid();
+        const language = await languagesUseCase.getLanguagesById(idLanguage);
+
+        const sequelize = getDbInstance();
+        const transaction = await sequelize.transaction();
+
+        try {
+            const ext = file.mimetype.split('/')[1];
+            const key = 'movies/' + movieId + '/sounds/' + language?.language_slug_name + '/' + fileName+'.'+ext;
+            console.log(ext);
+            const fileType = await fileTypesUseCase.getFIleTypeByExtension(ext);
+            if (!fileType) throw new Error('File type not found');
+
+            const validate = await languagesByMoviesUseCase.getLanguagesByMoviesByMovieId(movieId);
+
+            for (const languageByMovie of validate) {
+                if (languageByMovie.language_by_movie_id_language === idLanguage) {
+                    throw new Error('Language already exists');
+                }
+            }
+
+            const generalSound = await genericUrlsUseCase.createGenericUrls({
+                gene_url_format: file.mimetype,
+                gene_url_size: file.size,
+                gene_url_value: key,
+                gene_url_file_type: fileType.sys_file_type_id
+            }, idUserLogged, transaction);
+
+            if (!generalSound) throw new Error('Image not created in registry');
+
+            await languagesByMoviesUseCase.createLanguagesByMovies({
+                language_by_movie_id_language: idLanguage,
+                language_by_movie_id_movie: movieId,
+                language_by_movie_id_url_sound: generalSound.gene_url_id
+            }, idUserLogged, transaction);
+
+            await this.backBlaze.uploadBuffer(file.buffer, { key: key, contentType: file.mimetype });
+
+            await this.moviesRepository.update(movieId, {
+                movie_update_id_user: idUserLogged
+            });
+
+            await transaction.commit();
+
+            return generalSound;
+        } catch (e) {
+            await transaction.rollback();
+            throw new Error('Error in upload image for movie: ' + e);
         }
     }
 
