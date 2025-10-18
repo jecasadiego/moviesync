@@ -1,4 +1,5 @@
 import { TNullableString, TNullableNumber, TNullableDate } from "@app/utils/shared/types";
+import { Transaction } from "sequelize";
 
 export class GenericUrls {
   constructor(
@@ -17,7 +18,7 @@ export class GenericUrls {
 
 
 export interface IGenericUrlsRepository {
-  create(genericUrlsData: Partial<GenericUrls>): Promise<GenericUrls>;
+  create(genericUrlsData: Partial<GenericUrls>, transaction?: Transaction): Promise<GenericUrls>;
   findAll(): Promise<GenericUrls[]>;
   findById(id: number): Promise<GenericUrls | null>;
   update(id: number, genericUrlsData: Partial<GenericUrls>): Promise<GenericUrls | null>;

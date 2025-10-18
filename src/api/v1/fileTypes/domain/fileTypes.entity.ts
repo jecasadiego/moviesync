@@ -17,4 +17,5 @@ export class FileTypes {
 export interface IFileTypesRepository {
   findAll(): Promise<FileTypes[]>;
   findById(id: number): Promise<FileTypes | null>;
+  findByExtension(extension: string): Promise<FileTypes | null>;
 }

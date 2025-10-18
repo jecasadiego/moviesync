@@ -12,4 +12,8 @@ export class FileTypesUseCase {
         return await this.fileTypesRepository.findById(id);
     }
 
+    async getFIleTypeByExtension(extension: string): Promise<FileTypes | null> {
+        return await this.fileTypesRepository.findByExtension(extension);
+    }
+
 }

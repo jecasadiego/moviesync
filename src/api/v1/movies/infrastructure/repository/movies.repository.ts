@@ -1,6 +1,8 @@
 
 import { IMoviesRepository } from '@api/movies/domain/movies.entity';
 import { MoviesModel } from '@api/movies/infrastructure/model/movies.model';
+import { GenericUrlsModel } from '@app/api/v1/genericUrls/infrastructure/model/genericUrls.model';
+import { UrlsMoviesImagesModel } from '@app/api/v1/urlsMoviesImages/infrastructure/model/urlsMoviesImages.model';
 
 export class MoviesRepository implements IMoviesRepository {
   async findAll(): Promise<MoviesModel[]> {
@@ -8,7 +10,23 @@ export class MoviesRepository implements IMoviesRepository {
   }
 
   async findById(id: number): Promise<MoviesModel | null> {
-    return await MoviesModel.findByPk(id);
+    return await MoviesModel.findByPk(id, {
+      include:
+        [
+          {
+            model: UrlsMoviesImagesModel,
+            as: 'images_movies',
+            attributes: ['url_movies_id'],
+            include: [{ model: GenericUrlsModel, as: 'images', attributes: ['gene_url_id', 'gene_url_value'] }]
+          },
+          {
+            model: GenericUrlsModel,
+            as: 'image_default',
+            attributes: ['gene_url_id', 'gene_url_value'],
+            required: false
+          }
+        ]
+    });
   }
 
   async create(moviesData: Partial<MoviesModel>): Promise<MoviesModel> {

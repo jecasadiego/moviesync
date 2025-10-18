@@ -23,6 +23,7 @@ const createInstanceDb = () => {
       supportBigNumbers: true,
       bigNumberStrings: true,
     },
+    logging: false,
   };
 
   sequelizeInstance = new Sequelize(cn.database, cn.user, cn.password, options);

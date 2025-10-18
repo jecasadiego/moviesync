@@ -41,7 +41,7 @@ GenericUrlsModel.init(
     },
 
     gene_url_value: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: true,
     },
 

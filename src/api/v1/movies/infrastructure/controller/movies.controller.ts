@@ -42,6 +42,19 @@ export class MoviesController {
         }
     };
 
+    public uploadImageForMovie = async ({ params: { id }, method, files, headers }: Request, res: Response) => {
+        try {
+            const idUserLogged = getIdUserLogged(headers.authorization);
+            const filesConvert = files as Express.Multer.File[];
+            if(!filesConvert) return warning(res, EErrorMessage.NOT_FOUND_ERROR, ECodeHTTPStatus.NOT_FOUND, "Files not found");
+            const movies = await this.moviesUseCase.uploadImageForMovie(+id, filesConvert, idUserLogged);
+            fromStatusAndCode(res, movies, method);
+        } catch (error: unknown) {
+            const errorAsError = error as Error;
+            return warning(res, EErrorMessage.CREATE_DATA_ERROR, ECodeHTTPStatus.INTERNAL_SERVER_ERROR, errorAsError.message);
+        }
+    };
+
     public updateMovies = async ({ params: { id }, body, method, headers }: Request, res: Response) => {
         try {
             const idUserLogged = getIdUserLogged(headers.authorization);

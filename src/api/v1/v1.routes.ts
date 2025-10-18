@@ -5,6 +5,7 @@ import { routesFileTypes } from "@api/fileTypes/infrastructure/routes/fileTypes.
 import { routesMovies } from "@api/movies/infrastructure/routes/movies.routes";
 import { routesTheaters } from "@api/theaters/infrastructure/routes/theaters.routes";
 import { routesBackblaze } from "@api/backblaze/infrastructure/routes/backblaze.routes";
+import { routesGenericUrls } from "@api/genericUrls/infrastructure/routes/genericUrls.routes";
 
 export {
     routesAuth as auth,
@@ -13,5 +14,6 @@ export {
     routesFileTypes as fileTypes,
     routesMovies as movies,
     routesTheaters as theaters,
-    routesBackblaze as backblaze
+    routesBackblaze as backblaze,
+    routesGenericUrls as genericUrls
 };

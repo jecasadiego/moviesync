@@ -1,6 +1,7 @@
 
 import { IGenericUrlsRepository } from '@api/genericUrls/domain/genericUrls.entity';
 import { GenericUrlsModel } from '@api/genericUrls/infrastructure/model/genericUrls.model';
+import { Transaction } from 'sequelize';
 
 export class GenericUrlsRepository implements IGenericUrlsRepository {
   async findAll(): Promise<GenericUrlsModel[]> {
@@ -11,8 +12,8 @@ export class GenericUrlsRepository implements IGenericUrlsRepository {
     return await GenericUrlsModel.findByPk(id);
   }
 
-  async create(genericUrlsData: Partial<GenericUrlsModel>): Promise<GenericUrlsModel> {
-    return await GenericUrlsModel.create(genericUrlsData);
+  async create(genericUrlsData: Partial<GenericUrlsModel>, transaction?: Transaction): Promise<GenericUrlsModel> {
+    return await GenericUrlsModel.create(genericUrlsData, { transaction });
   }
 
   async update(id: number, genericUrlsData: Partial<GenericUrlsModel>): Promise<GenericUrlsModel> {

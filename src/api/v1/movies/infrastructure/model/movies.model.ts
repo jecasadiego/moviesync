@@ -1,7 +1,9 @@
 
 import { Model, DataTypes } from 'sequelize';
 import { getDbInstance } from '@app/app/database';
-import { TNullableString,  TNullableNumber, TNullableDate } from "@app/utils/shared/types";
+import { TNullableNumber, TNullableDate } from "@app/utils/shared/types";
+import { UrlsMoviesImagesModel } from '@app/api/v1/urlsMoviesImages/infrastructure/model/urlsMoviesImages.model';
+import { GenericUrlsModel } from '@app/api/v1/genericUrls/infrastructure/model/genericUrls.model';
 
   
 const sequelizeInstance = getDbInstance();
@@ -9,14 +11,19 @@ const sequelizeInstance = getDbInstance();
 export class MoviesModel extends Model {
   declare movie_id: number;
   declare movie_id_image_default: TNullableNumber;
-  declare movie_id_status: TNullableNumber;
-  declare movie_title: TNullableString;
-  declare movie_description: TNullableString;
+  declare movie_id_status: number;
+  declare movie_title: string;
+  declare movie_description: string;
   declare movie_is_deleted: TNullableNumber;
-  declare movie_create_date: TNullableDate;
+  declare movie_create_date: Date;
   declare movie_update_date: TNullableDate;
-  declare movie_create_id_user: TNullableNumber;
+  declare movie_create_id_user: number;
   declare movie_update_id_user: TNullableNumber;
+
+  static associate() { 
+    this.belongsTo(GenericUrlsModel, { foreignKey: 'movie_id_image_default', as: 'image_default' });
+    this.hasMany(UrlsMoviesImagesModel, { foreignKey: 'url_movies_id_movie', as: 'images_movies' });
+  }
 }
   
 MoviesModel.init(
@@ -35,18 +42,18 @@ MoviesModel.init(
 
     movie_id_status: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       defaultValue: 1,
     },
 
     movie_title: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
 
     movie_description: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
 
     movie_is_deleted: {
@@ -57,7 +64,7 @@ MoviesModel.init(
 
     movie_create_date: {
       type: DataTypes.DATE,
-      allowNull: true,
+      allowNull: false,
     },
 
     movie_update_date: {
@@ -67,7 +74,7 @@ MoviesModel.init(
 
     movie_create_id_user: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
     },
 
     movie_update_id_user: {
@@ -95,3 +102,5 @@ MoviesModel.init(
     }
   }
 );
+
+MoviesModel.associate();

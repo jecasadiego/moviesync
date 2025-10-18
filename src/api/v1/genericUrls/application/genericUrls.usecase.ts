@@ -2,6 +2,7 @@
 import { GenericUrls, IGenericUrlsRepository } from '@api/genericUrls/domain/genericUrls.entity';
 import { validateFields } from '@app/utils/validations';
 import { genericUrlsOmitKeys, genericUrlsNotNullKeys } from '@api/genericUrls/domain/genericUrls.value';
+import { Transaction } from 'sequelize';
 
 export class GenericUrlsUseCase {
     constructor(private readonly genericUrlsRepository: IGenericUrlsRepository) { }
@@ -14,13 +15,13 @@ export class GenericUrlsUseCase {
         return await this.genericUrlsRepository.findById(id);
     }
 
-    async createGenericUrls(genericUrlsData: Partial<GenericUrls>, idUserLogged: number): Promise<GenericUrls> {
+    async createGenericUrls(genericUrlsData: Partial<GenericUrls>, idUserLogged: number, transaction?: Transaction): Promise<GenericUrls> {
         await validateFields(genericUrlsData, genericUrlsNotNullKeys, genericUrlsOmitKeys);
         const genericUrlsToCreate: Partial<GenericUrls> = {
             ...genericUrlsData,
             gene_url_update_id_user: idUserLogged
         }
-        return await this.genericUrlsRepository.create(genericUrlsToCreate);
+        return await this.genericUrlsRepository.create(genericUrlsToCreate, transaction);
     }
 
     public async updateGenericUrls(id: number, genericUrlsData: Partial<GenericUrls>, idUserLogged: number): Promise<GenericUrls | null> {
